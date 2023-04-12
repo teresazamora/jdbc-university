@@ -23,7 +23,6 @@ course_id SERIAL UNIQUE,
 course_name VARCHAR(30) NOT NULL,
 course_description VARCHAR(50) NOT NULL
 );
-
 CREATE TABLE students_courses
 (
 student_id INTEGER,

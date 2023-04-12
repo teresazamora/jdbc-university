@@ -14,7 +14,7 @@ public class TableCreator {
     public static void createTable() throws SQLException {
 
         DataBaseConnection dataConnection = new DataBaseConnection();
-        Reader reader = new Reader();
+        FileReader reader = new FileReader();
         String line;
 
         try (Connection connection = dataConnection.getConnection();

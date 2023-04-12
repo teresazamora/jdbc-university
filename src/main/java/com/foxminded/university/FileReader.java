@@ -2,7 +2,7 @@ package com.foxminded.university;
 
 import java.io.InputStream;
 
-public class Reader {
+public class FileReader {
     
     public InputStream getFileFromResource(String fileName) {
         ClassLoader classLoader = getClass().getClassLoader();
@@ -10,7 +10,6 @@ public class Reader {
         if (inputStream == null) {
             throw new IllegalArgumentException("file not found! " + fileName);
         } else {
-
             return inputStream;
         }
     }
