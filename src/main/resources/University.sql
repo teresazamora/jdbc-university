@@ -12,7 +12,7 @@ group_name VARCHAR (30) NOT NULL
 CREATE TABLE students
 (
 student_id SERIAL UNIQUE,
-group_id INTEGER REFERENCES groups(group_id) ON UPDATE CASCADE,
+group_id INTEGER REFERENCES groups(group_id) ON DELETE CASCADE, 
 first_name VARCHAR(30) NOT NULL,
 last_name VARCHAR(30) NOT NULL
 );

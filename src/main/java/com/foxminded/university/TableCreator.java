@@ -4,37 +4,31 @@ import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.nio.charset.StandardCharsets;
 import java.sql.Connection;
+import java.sql.PreparedStatement;
 import java.sql.SQLException;
-import java.sql.Statement;
+import java.util.stream.Collectors;
 
 public class TableCreator {
 
-    static String file = "University.sql";
-
-    public static void createTable() throws SQLException {
+    public static void createTable(String file) throws Exception {
 
         DataBaseConnection dataConnection = new DataBaseConnection();
         FileReader reader = new FileReader();
-        String line;
+
+        String text = new BufferedReader(
+                new InputStreamReader(reader.getFileFromResource(file), StandardCharsets.UTF_8)).lines()
+                .collect(Collectors.joining("\n"));
 
         try (Connection connection = dataConnection.getConnection();
 
-                Statement statement = connection.createStatement();
+                PreparedStatement statement = connection.prepareStatement(text)) {
 
-                BufferedReader bufferedReader = new BufferedReader(
-                        new InputStreamReader(reader.getFileFromResource(file), StandardCharsets.UTF_8))) {
-
-            while ((line = bufferedReader.readLine()) != null) {
-
-                statement.execute(line);
-
-            }
+            statement.executeUpdate();
             System.out.println("Table created!");
 
-        } catch (Exception e) {
-
-       System.out.println("Read more about connection or sql o IO… You don’t catch it!");
-       e.getMessage();
+        } catch (SQLException e) {
+            System.out.println("Read more about connection or sql o IO… You don’t catch it!");
         }
+
     }
 }
