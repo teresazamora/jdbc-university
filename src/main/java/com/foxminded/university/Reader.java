@@ -2,7 +2,7 @@ package com.foxminded.university;
 
 import java.io.InputStream;
 
-public class FileReader {
+public class Reader {
     
     public InputStream getFileFromResource(String fileName) {
         ClassLoader classLoader = getClass().getClassLoader();

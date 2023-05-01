@@ -1,4 +1,4 @@
-package com.foxminded.university.dao;
+package com.foxminded.university.dao.jdbc;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -6,18 +6,18 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 
-import com.foxminded.university.DataBaseConnection;
+import com.foxminded.university.ConnectionProvider;
+import com.foxminded.university.dao.CourseDao;
 import com.foxminded.university.model.Course;
 
 public class JdbcCourseDao implements CourseDao {
 
-    private DataBaseConnection dataConnection;
+    final String ADD_NEW_COURSE = "INSERT INTO courses (course_name, course_description) VALUES (?,?)";
+    private ConnectionProvider dataConnection;
 
-    public JdbcCourseDao(DataBaseConnection dataConnection) {
+    public JdbcCourseDao(ConnectionProvider dataConnection) {
         this.dataConnection = dataConnection;
     }
-
-    String ADD_NEW_COURSE = "INSERT INTO courses (course_name, course_description) VALUES (?,?)";
 
     @Override
     public void create(Course course) {

@@ -1,5 +1,7 @@
 package com.foxminded.university.model;
 
+import java.util.Objects;
+
 public class Student {
 
     int studentId;
@@ -9,6 +11,12 @@ public class Student {
 
     public Student(int studentId, int groupId, String firstName, String lastName) {
         this.studentId = studentId;
+        this.groupId = groupId;
+        this.firstName = firstName;
+        this.lastName = lastName;
+    }
+
+    public Student(int groupId, String firstName, String lastName) {
         this.groupId = groupId;
         this.firstName = firstName;
         this.lastName = lastName;
@@ -56,4 +64,21 @@ public class Student {
         return studentId + " assign to group " + groupId + ": " + firstName + " " + lastName;
     }
 
+    @Override
+    public int hashCode() {
+        return Objects.hash(firstName, groupId, lastName, studentId);
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj)
+            return true;
+        if (obj == null)
+            return false;
+        if (getClass() != obj.getClass())
+            return false;
+        Student other = (Student) obj;
+        return Objects.equals(firstName, other.firstName) && groupId == other.groupId
+                && Objects.equals(lastName, other.lastName) && studentId == other.studentId;
+    }
 }

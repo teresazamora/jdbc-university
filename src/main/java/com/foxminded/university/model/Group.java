@@ -1,37 +1,57 @@
 package com.foxminded.university.model;
 
+import java.util.Objects;
+
 public class Group {
-    int groupId;
-    String groupName;
+    
+    private int id;
+    private String name;
 
-    public Group(String groupName) {
-        this.groupName = groupName;
+    public Group(String name) {
+        this.name = name;
     }
 
-    public Group(int groupId, String groupName) {
-        this.groupId = groupId;
-        this.groupName = groupName;
+    public Group(int id, String name) {
+        this.id = id;
+        this.name = name;
     }
 
-    public int getGroupId() {
-        return groupId;
+    public int getId() {
+        return id;
     }
 
-    public void setGroupId(int groupId) {
-        this.groupId = groupId;
+    public void setId(int id) {
+        this.id = id;
     }
 
-    public String getGroupName() {
-        return groupName;
+    public String getName() {
+        return name;
     }
 
-    public void setGroupName(String groupName) {
-        this.groupName = groupName;
+    public void setName(String name) {
+        this.name = name;
     }
 
     @Override
     public String toString() {
-        return groupId + " " + groupName;
+        return id + " " + name;
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, name);
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj)
+            return true;
+        if (obj == null)
+            return false;
+        if (getClass() != obj.getClass())
+            return false;
+        Group other = (Group) obj;
+        return id == other.id && Objects.equals(name, other.name);
     }
 
 }

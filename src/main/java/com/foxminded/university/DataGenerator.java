@@ -13,8 +13,8 @@ public class DataGenerator {
 
     Random random = new Random();
 
-    public List<Student> getListOfStudent() {
-        List<Student> listOfStudents = new ArrayList<>();
+    public List<Student> generateStudents(int amount) {
+        List<Student> students = new ArrayList<>();
         List<String> listOfName = new ArrayList<>();
         List<String> listOfSurname = new ArrayList<>();
 
@@ -25,18 +25,15 @@ public class DataGenerator {
                 "Fontana", "Conti", "Esposito", "Rizzo", "Moretti", "Barbieri", "Lombardi", "Longo", "Rinaldi",
                 "Colombo", "Martinelli", "Gatti", "Cartelli", "Rota", "Locatelli");
 
-        for (int i = 0; i < 200; i++) {
+        for (int i = 0; i < amount; i++) {
             int index = random.nextInt(listOfName.size());
-
             int value = random.nextInt(listOfSurname.size());
-
-            listOfStudents.add(new Student(listOfName.get(index), listOfSurname.get(value)));
-
+            students.add(new Student(listOfName.get(index), listOfSurname.get(value)));
         }
-        return listOfStudents;
+        return students;
     }
 
-    public List<Group> getListOfGroups() {
+    public List<Group> generateGroups() {
 
         List<Group> listOfGroups = new ArrayList<>();
 
@@ -63,7 +60,7 @@ public class DataGenerator {
         return listOfGroups;
     }
 
-    public List<Course> getListOfCourses() {
+    public List<Course> generateCourses() {
         List<Course> listOfCourses = new ArrayList<>();
         listOfCourses.add(new Course("Math", "Science of numbers"));
         listOfCourses.add(new Course("Biology", "Science of nature"));
@@ -84,7 +81,7 @@ public class DataGenerator {
         Map<Integer, Integer> studentsGroup = new HashMap<>();
 
         for (Student student : students) {
-            student.setGroupId(groups.get(random.nextInt(groups.size())).getGroupId());
+            student.setGroupId(groups.get(random.nextInt(groups.size())).getId());
             Integer count = studentsGroup.get(student.getGroupId());
             if (count == null) {
                 studentsGroup.put(student.getGroupId(), 1);

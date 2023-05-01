@@ -4,17 +4,18 @@ import java.util.List;
 import java.util.Map;
 import java.util.Scanner;
 
-import com.foxminded.university.dao.JdbcCourseDao;
-import com.foxminded.university.dao.JdbcGroupDao;
-import com.foxminded.university.dao.JdbcStudentDao;
+import com.foxminded.university.dao.jdbc.JdbcCourseDao;
+import com.foxminded.university.dao.jdbc.JdbcGroupDao;
+import com.foxminded.university.dao.jdbc.JdbcStudentDao;
 import com.foxminded.university.model.*;
 
 public class Main {
 
     public static void main(String[] args) throws Exception {
-        String file = "University.sql";
-        DataBaseConnection dataConnection = new DataBaseConnection();
-        TableCreator.createTable(file);
+        String file = "schema.sql";
+        String fileProperties = "configuration.properties";
+        ConnectionProvider dataConnection = new ConnectionProvider(fileProperties);
+        TableCreator.createTable(file, dataConnection);
         String startMenu = "a. Find all groups with less or equals student count \n"
                 + "b. Find all students related to course with given name \n" + "c. Add new student \n"
                 + "d. Delete student by STUDENT_ID \n" + "e. Add a student to the course (from a list) \n"
@@ -22,9 +23,9 @@ public class Main {
         System.out.println(startMenu);
 
         DataGenerator generator = new DataGenerator();
-        List<Student> students = generator.getListOfStudent();
-        List<Group> groups = generator.getListOfGroups();
-        List<Course> courses = generator.getListOfCourses();
+        List<Student> students = generator.generateStudents(200);
+        List<Group> groups = generator.generateGroups();
+        List<Course> courses = generator.generateCourses();
         Map<Student, List<Course>> studentsCourses = generator.assignCoursesToStudent(students, courses);
 
         JdbcGroupDao jdbcGroup = new JdbcGroupDao(dataConnection);
@@ -36,7 +37,7 @@ public class Main {
         }
 
         generator.assignStudentsToGroups(students, groups, 10, 30);
-       
+
         for (Student student : students) {
             jdbcStudent.create(student);
         }
@@ -66,14 +67,18 @@ public class Main {
             System.out.println("Please, choose course's name from a list: ");
             courses.forEach(System.out::println);
             String courseName = scanner.nextLine();
-            System.out.println(jdbcStudent.findByCourse(courseName));
+            System.out.println(jdbcStudent.findByCourseName(courseName));
 
         } else if (responce.equals("c")) {
+            System.out.println("Please, choose group from a list: ");
+            System.out.println(groups);
+            int groupId = scanner.nextInt();
             System.out.println("Please, enter student's name: ");
+            scanner.nextLine();
             String name = scanner.nextLine();
             System.out.println("Please, enter student's last name: ");
             String surname = scanner.nextLine();
-            jdbcStudent.create(new Student(name, surname));
+            jdbcStudent.create(new Student(groupId, name, surname));
             System.out.println("Student created");
 
         } else if (responce.equals("d")) {

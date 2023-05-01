@@ -7,7 +7,7 @@ import com.foxminded.university.model.Student;
 public interface StudentDao {
     
     void create(Student student);
-    List<Student> findByCourse(String courseName);
+    List<Student> findByCourseName(String courseName);
     void delete(int id);
     void deleteFromCourse(int studentId, int courseId);
     void addToCourse(int studentId, int courseId);

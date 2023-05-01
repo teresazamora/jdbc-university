@@ -1,10 +1,12 @@
 package com.foxminded.university.model;
 
+import java.util.Objects;
+
 public class Course {
 
-    int id;
-    String name;
-    String description;
+    private int id;
+    private String name;
+    private String description;
 
     public Course(int id, String name, String description) {
         this.id = id;
@@ -44,6 +46,23 @@ public class Course {
     @Override
     public String toString() {
         return id + " - " + name + ": " + description;
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(description, id, name);
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj)
+            return true;
+        if (obj == null)
+            return false;
+        if (getClass() != obj.getClass())
+            return false;
+        Course other = (Course) obj;
+        return Objects.equals(description, other.description) && id == other.id && Objects.equals(name, other.name);
     }
 
 }

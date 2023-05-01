@@ -10,10 +10,9 @@ import java.util.stream.Collectors;
 
 public class TableCreator {
 
-    public static void createTable(String file) throws Exception {
+    public static void createTable(String file,ConnectionProvider dataConnection ) throws Exception {
 
-        DataBaseConnection dataConnection = new DataBaseConnection();
-        FileReader reader = new FileReader();
+        Reader reader = new Reader();
 
         String text = new BufferedReader(
                 new InputStreamReader(reader.getFileFromResource(file), StandardCharsets.UTF_8)).lines()
