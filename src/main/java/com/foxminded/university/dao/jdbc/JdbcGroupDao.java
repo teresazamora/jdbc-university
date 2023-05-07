@@ -13,18 +13,19 @@ import com.foxminded.university.model.Group;
 
 public class JdbcGroupDao implements GroupDao {
 
-    final String ADD_NEW_GROUP = "INSERT INTO groups (group_name) VALUES(?)";
-    final String DELETE_BY_ID = "DELETE FROM groups WHERE group_id = ?";
-    final String FIND_BY_ALMOUNT_OF_STUDENTS = "SELECT groups.group_id, groups.group_name FROM groups INNER JOIN students ON groups.group_id = students.group_id GROUP BY groups.group_id, groups.group_name HAVING COUNT(*) <= ?";
-    private ConnectionProvider dataConnection;
+    static final String ADD_NEW_GROUP = "INSERT INTO groups (group_name) VALUES(?)";
+    static final String DELETE_BY_ID = "DELETE FROM groups WHERE group_id = ?";
+    static final String FIND_BY_ALMOUNT_OF_STUDENTS = "SELECT groups.group_id, groups.group_name FROM groups INNER JOIN students ON groups.group_id = students.group_id GROUP BY groups.group_id, groups.group_name HAVING COUNT(*) <= ?";
+    
+    private ConnectionProvider connectionProvider;
 
     public JdbcGroupDao(ConnectionProvider dataConnection) {
-        this.dataConnection = dataConnection;
+        this.connectionProvider = dataConnection;
     }
 
     @Override
     public void create(Group group) {
-        try (Connection connection = dataConnection.getConnection();
+        try (Connection connection = connectionProvider.getConnection();
                 PreparedStatement preparedStatement = connection.prepareStatement(ADD_NEW_GROUP,
                         Statement.RETURN_GENERATED_KEYS)) {
             preparedStatement.setString(1, group.getName());
@@ -41,7 +42,7 @@ public class JdbcGroupDao implements GroupDao {
 
     @Override
     public void delete(int groupId) {
-        try (Connection connection = dataConnection.getConnection();
+        try (Connection connection = connectionProvider.getConnection();
                 PreparedStatement preparedStatement = connection.prepareStatement(DELETE_BY_ID)) {
             preparedStatement.setInt(1, groupId);
             preparedStatement.execute();
@@ -53,7 +54,7 @@ public class JdbcGroupDao implements GroupDao {
     @Override
     public List<Group> findGroupByAmountStudent(int amount) {
         List<Group> groups = new ArrayList<>();
-        try (Connection connection = dataConnection.getConnection();
+        try (Connection connection = connectionProvider.getConnection();
                 PreparedStatement preparedStatement = connection.prepareStatement(FIND_BY_ALMOUNT_OF_STUDENTS)) {
             preparedStatement.setInt(1, amount);
             ResultSet resultSet = preparedStatement.executeQuery();

@@ -12,16 +12,17 @@ import com.foxminded.university.model.Course;
 
 public class JdbcCourseDao implements CourseDao {
 
-    final String ADD_NEW_COURSE = "INSERT INTO courses (course_name, course_description) VALUES (?,?)";
-    private ConnectionProvider dataConnection;
+    static final String ADD_NEW_COURSE = "INSERT INTO courses (course_name, course_description) VALUES (?,?)";
+    
+    private ConnectionProvider connectionProvider;
 
     public JdbcCourseDao(ConnectionProvider dataConnection) {
-        this.dataConnection = dataConnection;
+        this.connectionProvider = dataConnection;
     }
 
     @Override
     public void create(Course course) {
-        try (Connection connection = dataConnection.getConnection();
+        try (Connection connection = connectionProvider.getConnection();
                 PreparedStatement preparedStatement = connection.prepareStatement(ADD_NEW_COURSE,
                         Statement.RETURN_GENERATED_KEYS)) {
             preparedStatement.setString(1, course.getName());
