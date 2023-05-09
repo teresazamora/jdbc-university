@@ -1,4 +1,4 @@
-package com.foxminded.university;
+package com.foxminded.university.dao.jdbc;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
@@ -8,12 +8,13 @@ import org.dbunit.dataset.ITable;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 
+import com.foxminded.university.ConnectionForTest;
 import com.foxminded.university.ConnectionProvider;
 import com.foxminded.university.dao.jdbc.JdbcCourseDao;
 import com.foxminded.university.model.Course;
 
-public class JdbcCourseDaoTest {
-    
+public class JdbcCourseDaoTest extends ConnectionForTest {
+
     private static final String JDBC_DRIVER = org.h2.Driver.class.getName();
     private ConnectionProvider connectionProvider;
     private JdbcCourseDao courseDao;
@@ -24,15 +25,9 @@ public class JdbcCourseDaoTest {
         this.courseDao = new JdbcCourseDao(connectionProvider);
         this.databaseTester = new JdbcDatabaseTester(JDBC_DRIVER,
                 connectionProvider.getConnection().getMetaData().getURL());
+        super.beforeAll();
     }
 
-    @BeforeAll
-    public static void beforeAll() throws Exception {
-        ConnectionForTest connectionForTest = new ConnectionForTest();
-        connectionForTest.createSchema();
-        connectionForTest.init();
-    }
-   
     @Test
     void givenNewCourse_whenCreate_thenNewCourse() throws Exception {
         Course expected = new Course("Art", "Science of beautifull things");

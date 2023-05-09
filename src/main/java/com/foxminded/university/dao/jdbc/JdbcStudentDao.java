@@ -40,7 +40,7 @@ public class JdbcStudentDao implements StudentDao {
             preparedStatement.executeUpdate();
             try (ResultSet generateKeys = preparedStatement.getGeneratedKeys()) {
                 generateKeys.next();
-                student.setStudentId(generateKeys.getInt(1));
+                student.setId(generateKeys.getInt(1));
             }
         } catch (Exception e) {
             e.getStackTrace();

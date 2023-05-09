@@ -7,6 +7,6 @@ import com.foxminded.university.model.Group;
 public interface GroupDao {
     void create(Group group);
     void delete(int groupId);
-    List<Group> findGroupByAmountStudent(int amount);
+    List<Group> findByStudentsAmount(int amount);
 
 }

@@ -1,4 +1,4 @@
-package com.foxminded.university;
+package com.foxminded.university.dao.jdbc;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
@@ -12,37 +12,31 @@ import org.dbunit.dataset.DataSetException;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 
+import com.foxminded.university.ConnectionForTest;
 import com.foxminded.university.ConnectionProvider;
 import com.foxminded.university.dao.jdbc.JdbcStudentDao;
 import com.foxminded.university.model.Course;
 import com.foxminded.university.model.Student;
 
-public class JdbcStudentDaoTest {
+public class JdbcStudentDaoTest extends ConnectionForTest {
 
     private static final String JDBC_DRIVER = org.h2.Driver.class.getName();
     private ConnectionProvider connectionProvider;
     private JdbcStudentDao studentDao;
     private IDatabaseTester databaseTester;
 
-    public JdbcStudentDaoTest() throws SQLException, ClassNotFoundException {
+    public JdbcStudentDaoTest() throws Exception {
         this.connectionProvider = new ConnectionProvider("application.properties");
         this.studentDao = new JdbcStudentDao(connectionProvider);
         this.databaseTester = new JdbcDatabaseTester(JDBC_DRIVER,
                 connectionProvider.getConnection().getMetaData().getURL());
-    }
-
-
-    @BeforeAll
-    public static void beforeAll() throws Exception {
-        ConnectionForTest connectionForTest = new ConnectionForTest();
-        connectionForTest.createSchema();
-        connectionForTest.init();
+        super.beforeAll();
     }
 
     @Test
     void giveStudent_whenDelete_thenGetAmountRowToVerificateIfStudentWasDelete() throws DataSetException, Exception {
         Student expectedStudent = new Student(3, 3, "Andrea", "Rota");
-        studentDao.delete(expectedStudent.getStudentId());
+        studentDao.delete(expectedStudent.getId());
         int actual = databaseTester.getConnection().createQueryTable("students", "select * from students")
                 .getRowCount();
         assertEquals(2, actual);
@@ -58,13 +52,14 @@ public class JdbcStudentDaoTest {
     }
 
     @Test
-    void giveStudent_whenRemoveFromCourse_thenVerificateIfStudentsWasDeleteFromCourse() throws DataSetException, Exception {
+    void giveStudent_whenRemoveFromCourse_thenVerificateIfStudentsWasDeleteFromCourse()
+            throws DataSetException, Exception {
         Student expectedStudent = new Student(1, 1, "Matilde", "Gatti");
         Course expectedCourse = new Course(1, "Math", "Science of numbers");
 
-        studentDao.deleteFromCourse(expectedStudent.getStudentId(), expectedCourse.getId());
+        studentDao.deleteFromCourse(expectedStudent.getId(), expectedCourse.getId());
         int actual = databaseTester.getConnection().createQueryTable("students_courses",
                 "select * from students_courses where (student_id = 1) and (course_id = 1)").getRowCount();
         assertEquals(0, actual);
-    } 
+    }
 }

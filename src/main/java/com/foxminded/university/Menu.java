@@ -51,7 +51,7 @@ public class Menu {
     private void getGroup() {
         System.out.println("Please, insert your number: ");
         int number = scanner.nextInt();
-        System.out.println(jdbcGroup.findGroupByAmountStudent(number));
+        System.out.println(jdbcGroup.findByStudentsAmount(number));
     }
 
     private void getStudentsByCourse(List<Course> courses) {

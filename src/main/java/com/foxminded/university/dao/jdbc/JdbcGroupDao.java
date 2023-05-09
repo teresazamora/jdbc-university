@@ -52,7 +52,7 @@ public class JdbcGroupDao implements GroupDao {
     }
 
     @Override
-    public List<Group> findGroupByAmountStudent(int amount) {
+    public List<Group> findByStudentsAmount(int amount) {
         List<Group> groups = new ArrayList<>();
         try (Connection connection = connectionProvider.getConnection();
                 PreparedStatement preparedStatement = connection.prepareStatement(FIND_BY_ALMOUNT_OF_STUDENTS)) {

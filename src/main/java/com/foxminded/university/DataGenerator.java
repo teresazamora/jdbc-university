@@ -34,7 +34,6 @@ public class DataGenerator {
     }
 
     public List<Group> generateGroups(int amount) {
-
         List<Group> groups = new ArrayList<>();
         String alphabet = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
         String numbers = "0123456789";
@@ -83,21 +82,21 @@ public class DataGenerator {
             }
         }
         for (Student student : students) {
-
             Integer studentsInGroup = studentsGroup.get(student.getGroupId());
             if (studentsInGroup < minStudents || studentsInGroup > maxStudents) {
-                student.setGroupId(0);
+                students.remove(student);
             }
         }
     }
 
-    public Map<Student, List<Course>> assignCoursesToStudent(List<Student> students, List<Course> courses) {
-        
+    public Map<Student, List<Course>> assignCoursesToStudent(List<Student> students, List<Course> courses,
+            int maxCourses, int minCourses) {
+
         Map<Student, List<Course>> studentsCourses = new HashMap<>();
 
         for (Student student : students) {
             List<Course> coursesList = new ArrayList<>();
-            int index = random.nextInt(3 - 1 + 1) + 1;
+            int index = random.nextInt(maxCourses - minCourses + 1) + minCourses;
             for (int i = 1; i <= index; i++) {
                 Course course = courses.get(random.nextInt(courses.size()));
                 if (!coursesList.contains(course) || coursesList.isEmpty()) {

@@ -17,6 +17,11 @@ public class ConnectionForTest {
     private static final String JDBC_DRIVER = org.h2.Driver.class.getName();
     private IDatabaseTester databaseTester;
     
+    public void beforeAll() throws Exception {
+        createSchema();
+        init();
+    }
+    
     public void createSchema() throws Exception {
         URL url = Thread.currentThread().getContextClassLoader().getResource("schema.sql");
         File file = new File(url.toURI());

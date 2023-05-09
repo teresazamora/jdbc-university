@@ -8,9 +8,9 @@
         <maven.compiler.plugin>3.8.1</maven.compiler.plugin>
         <maven.surefire.plugin>3.0.0-M5</maven.surefire.plugin>
         <postgresql.version>42.5.1</postgresql.version>
-        <org.dbunit.version>2.7.3</org.dbunit.version>
-        <com.h2database.version>2.1.214</com.h2database.version>
-        <org.slf4j.version>1.5.6</org.slf4j.version>
+        <dbunit.version>2.7.3</dbunit.version>
+        <h2database.version>2.1.214</h2database.version>
+        <slf4j.version>1.5.6</slf4j.version>
     </properties>
     <dependencies>
         <dependency>
@@ -21,24 +21,24 @@
         <dependency>
             <groupId>org.slf4j</groupId>
             <artifactId>slf4j-api</artifactId>
-            <version>${org.slf4j.version}</version>
+            <version>${slf4j.version}</version>
             <type>jar</type>
         </dependency>
         <dependency>
             <groupId>org.slf4j</groupId>
             <artifactId>slf4j-simple</artifactId>
-            <version>${org.slf4j.version}</version>
+            <version>${slf4j.version}</version>
         </dependency>
         <dependency>
             <groupId>org.dbunit</groupId>
             <artifactId>dbunit</artifactId>
-            <version>${org.dbunit.version}</version>
+            <version>${dbunit.version}</version>
             <scope>test</scope>
         </dependency>
         <dependency>
             <groupId>com.h2database</groupId>
             <artifactId>h2</artifactId>
-            <version>${com.h2database.version}</version>
+            <version>${h2database.version}</version>
             <scope>test</scope>
         </dependency>
         <dependency>

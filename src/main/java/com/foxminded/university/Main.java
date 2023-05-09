@@ -2,7 +2,6 @@ package com.foxminded.university;
 
 import java.util.List;
 import java.util.Map;
-import java.util.Scanner;
 
 import com.foxminded.university.dao.jdbc.JdbcCourseDao;
 import com.foxminded.university.dao.jdbc.JdbcGroupDao;
@@ -21,7 +20,7 @@ public class Main {
         List<Student> students = generator.generateStudents(200);
         List<Group> groups = generator.generateGroups(10);
         List<Course> courses = generator.generateCourses();
-        Map<Student, List<Course>> studentsCourses = generator.assignCoursesToStudent(students, courses);
+        Map<Student, List<Course>> studentsCourses = generator.assignCoursesToStudent(students, courses, 3, 1);
 
         JdbcGroupDao jdbcGroup = new JdbcGroupDao(connectionProvider);
         JdbcStudentDao jdbcStudent = new JdbcStudentDao(connectionProvider);
@@ -45,7 +44,7 @@ public class Main {
             Student student = entry.getKey();
             List<Course> entry2 = entry.getValue();
             for (Course course : entry2) {
-                jdbcStudent.addToCourse(student.getStudentId(), course.getId());
+                jdbcStudent.addToCourse(student.getId(), course.getId());
 
             }
         }

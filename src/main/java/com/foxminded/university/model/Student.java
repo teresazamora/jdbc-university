@@ -4,13 +4,13 @@ import java.util.Objects;
 
 public class Student {
 
-    private int studentId;
+    private int id;
     private int groupId;
     private String firstName;
     private String lastName;
 
-    public Student(int studentId, int groupId, String firstName, String lastName) {
-        this.studentId = studentId;
+    public Student(int id, int groupId, String firstName, String lastName) {
+        this.id = id;
         this.groupId = groupId;
         this.firstName = firstName;
         this.lastName = lastName;
@@ -27,12 +27,12 @@ public class Student {
         this.lastName = lastName;
     }
 
-    public int getStudentId() {
-        return studentId;
+    public int getId() {
+        return id;
     }
 
-    public void setStudentId(int studentId) {
-        this.studentId = studentId;
+    public void setId(int studentId) {
+        this.id = studentId;
     }
 
     public int getGroupId() {
@@ -61,12 +61,12 @@ public class Student {
 
     @Override
     public String toString() {
-        return studentId + " assign to group " + groupId + ": " + firstName + " " + lastName;
+        return id + " assign to group " + groupId + ": " + firstName + " " + lastName;
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(firstName, groupId, lastName, studentId);
+        return Objects.hash(firstName, groupId, lastName, id);
     }
 
     @Override
@@ -79,6 +79,6 @@ public class Student {
             return false;
         Student other = (Student) obj;
         return Objects.equals(firstName, other.firstName) && groupId == other.groupId
-                && Objects.equals(lastName, other.lastName) && studentId == other.studentId;
+                && Objects.equals(lastName, other.lastName) && id == other.id;
     }
 }

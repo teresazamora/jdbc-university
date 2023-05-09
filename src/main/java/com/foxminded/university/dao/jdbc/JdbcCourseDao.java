@@ -12,7 +12,7 @@ import com.foxminded.university.model.Course;
 
 public class JdbcCourseDao implements CourseDao {
 
-    static final String ADD_NEW_COURSE = "INSERT INTO courses (course_name, course_description) VALUES (?,?)";
+    private static final String ADD_NEW_COURSE = "INSERT INTO courses (course_name, course_description) VALUES (?,?)";
     
     private ConnectionProvider connectionProvider;
 
