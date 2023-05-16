@@ -1,8 +1,10 @@
 package com.foxminded.university;
 
 import java.util.List;
-import java.util.Map;
 
+import com.foxminded.university.dao.CourseDao;
+import com.foxminded.university.dao.GroupDao;
+import com.foxminded.university.dao.StudentDao;
 import com.foxminded.university.dao.jdbc.JdbcCourseDao;
 import com.foxminded.university.dao.jdbc.JdbcGroupDao;
 import com.foxminded.university.dao.jdbc.JdbcStudentDao;
@@ -20,36 +22,34 @@ public class Main {
         List<Student> students = generator.generateStudents(200);
         List<Group> groups = generator.generateGroups(10);
         List<Course> courses = generator.generateCourses();
-        Map<Student, List<Course>> studentsCourses = generator.assignCoursesToStudent(students, courses, 3, 1);
 
-        JdbcGroupDao jdbcGroup = new JdbcGroupDao(connectionProvider);
-        JdbcStudentDao jdbcStudent = new JdbcStudentDao(connectionProvider);
-        JdbcCourseDao jdbcCourse = new JdbcCourseDao(connectionProvider);
+        GroupDao groupDao = new JdbcGroupDao(connectionProvider);
+        StudentDao studentDao = new JdbcStudentDao(connectionProvider);
+        CourseDao courseDao = new JdbcCourseDao(connectionProvider);
 
         for (Group group : groups) {
-            jdbcGroup.create(group);
+            groupDao.create(group);
         }
 
         generator.assignStudentsToGroups(students, groups, 10, 30);
 
         for (Student student : students) {
-            jdbcStudent.create(student);
+            studentDao.create(student);
         }
 
         for (Course course : courses) {
-            jdbcCourse.create(course);
+            courseDao.create(course);
         }
 
-        for (Map.Entry<Student, List<Course>> entry : studentsCourses.entrySet()) {
-            Student student = entry.getKey();
-            List<Course> entry2 = entry.getValue();
-            for (Course course : entry2) {
-                jdbcStudent.addToCourse(student.getId(), course.getId());
+        generator.assignCoursesToStudent(students, courses, 3, 1);
 
+        for (Student student : students) {
+            for (Course course : student.getCourses()) {
+                studentDao.addToCourse(student.getId(), course.getId());
             }
         }
 
-        Menu menu = new Menu(jdbcGroup, jdbcStudent);
+        Menu menu = new Menu(groupDao, studentDao);
         menu.getStart(students, courses, groups);
     }
 }

@@ -1,5 +1,6 @@
 package com.foxminded.university.model;
 
+import java.util.List;
 import java.util.Objects;
 
 public class Student {
@@ -8,6 +9,7 @@ public class Student {
     private int groupId;
     private String firstName;
     private String lastName;
+    private List<Course> courses;
 
     public Student(int id, int groupId, String firstName, String lastName) {
         this.id = id;
@@ -57,6 +59,14 @@ public class Student {
 
     public void setLastName(String lastName) {
         this.lastName = lastName;
+    }
+
+    public List<Course> getCourses() {
+        return courses;
+    }
+
+    public void setCourses(List<Course> courses) {
+        this.courses = courses;
     }
 
     @Override

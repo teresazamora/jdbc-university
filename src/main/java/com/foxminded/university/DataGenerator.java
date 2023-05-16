@@ -1,9 +1,7 @@
 package com.foxminded.university;
 
-import java.util.ArrayList;
 import java.util.*;
-import java.util.List;
-import java.util.Random;
+import java.util.stream.Collectors;
 
 import com.foxminded.university.model.Course;
 import com.foxminded.university.model.Group;
@@ -15,15 +13,12 @@ public class DataGenerator {
 
     public List<Student> generateStudents(int amount) {
         List<Student> students = new ArrayList<>();
-        List<String> names = new ArrayList<>();
-        List<String> surnames = new ArrayList<>();
-
-        boolean addName = Collections.addAll(names, "Aurora", "Ginevra", "Alice", "Beatrice", "Emma", "Giorgia",
-                "Vittoria", "Matilde", "Sofia", "Ludovica", "Leonardo", "Tommaso", "Francesco", "Andrea", "Alessandro",
-                "Lorenzo", "Riccardo", "Mattia", "Edoardo", "Gabriele");
-        boolean addLastName = Collections.addAll(surnames, "Rossi", "Ferrari", "Bianchi", "Gallo", "Costa", "Fontana",
-                "Conti", "Esposito", "Rizzo", "Moretti", "Barbieri", "Lombardi", "Longo", "Rinaldi", "Colombo",
-                "Martinelli", "Gatti", "Cartelli", "Rota", "Locatelli");
+        List<String> names = Arrays.asList("Aurora", "Ginevra", "Alice", "Beatrice", "Emma", "Giorgia", "Vittoria",
+                "Matilde", "Sofia", "Ludovica", "Leonardo", "Tommaso", "Francesco", "Andrea", "Alessandro", "Lorenzo",
+                "Riccardo", "Mattia", "Edoardo", "Gabriele");
+        List<String> surnames = Arrays.asList("Rossi", "Ferrari", "Bianchi", "Gallo", "Costa", "Fontana", "Conti",
+                "Esposito", "Rizzo", "Moretti", "Barbieri", "Lombardi", "Longo", "Rinaldi", "Colombo", "Martinelli",
+                "Gatti", "Cartelli", "Rota", "Locatelli");
 
         for (int i = 0; i < amount; i++) {
             int index = random.nextInt(names.size());
@@ -70,41 +65,32 @@ public class DataGenerator {
 
     public void assignStudentsToGroups(List<Student> students, List<Group> groups, int minStudents, int maxStudents) {
 
-        Map<Integer, Integer> studentsGroup = new HashMap<>();
+        Map<Integer, Long> studentsGroup = new HashMap<>();
 
         for (Student student : students) {
             student.setGroupId(groups.get(random.nextInt(groups.size())).getId());
-            Integer count = studentsGroup.get(student.getGroupId());
-            if (count == null) {
-                studentsGroup.put(student.getGroupId(), 1);
-            } else {
-                studentsGroup.put(student.getGroupId(), count + 1);
-            }
         }
+        studentsGroup = students.stream().collect(Collectors.groupingBy(Student::getGroupId, Collectors.counting()));
+
         for (Student student : students) {
-            Integer studentsInGroup = studentsGroup.get(student.getGroupId());
+            Long studentsInGroup = studentsGroup.get(student.getGroupId());
             if (studentsInGroup < minStudents || studentsInGroup > maxStudents) {
-                students.remove(student);
+                studentsGroup.remove(student);
             }
         }
     }
 
-    public Map<Student, List<Course>> assignCoursesToStudent(List<Student> students, List<Course> courses,
-            int maxCourses, int minCourses) {
-
-        Map<Student, List<Course>> studentsCourses = new HashMap<>();
-
+    public void assignCoursesToStudent(List<Student> students, List<Course> courses, int maxCourses, int minCourses) {
         for (Student student : students) {
             List<Course> coursesList = new ArrayList<>();
             int index = random.nextInt(maxCourses - minCourses + 1) + minCourses;
-            for (int i = 1; i <= index; i++) {
+            for (int i = minCourses; i <= index; i++) {
                 Course course = courses.get(random.nextInt(courses.size()));
                 if (!coursesList.contains(course) || coursesList.isEmpty()) {
                     coursesList.add(course);
                 }
             }
-            studentsCourses.put(student, coursesList);
+            student.setCourses(coursesList);
         }
-        return studentsCourses;
     }
 }

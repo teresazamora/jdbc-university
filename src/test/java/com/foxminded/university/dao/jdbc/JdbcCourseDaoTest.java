@@ -2,29 +2,18 @@ package com.foxminded.university.dao.jdbc;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
-import org.dbunit.IDatabaseTester;
-import org.dbunit.JdbcDatabaseTester;
 import org.dbunit.dataset.ITable;
-import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 
-import com.foxminded.university.ConnectionForTest;
-import com.foxminded.university.ConnectionProvider;
-import com.foxminded.university.dao.jdbc.JdbcCourseDao;
+import com.foxminded.university.DataProviderTest;
 import com.foxminded.university.model.Course;
 
-public class JdbcCourseDaoTest extends ConnectionForTest {
+public class JdbcCourseDaoTest extends DataProviderTest {
 
-    private static final String JDBC_DRIVER = org.h2.Driver.class.getName();
-    private ConnectionProvider connectionProvider;
     private JdbcCourseDao courseDao;
-    private IDatabaseTester databaseTester;
 
     public JdbcCourseDaoTest() throws Exception {
-        this.connectionProvider = new ConnectionProvider("application.properties");
         this.courseDao = new JdbcCourseDao(connectionProvider);
-        this.databaseTester = new JdbcDatabaseTester(JDBC_DRIVER,
-                connectionProvider.getConnection().getMetaData().getURL());
         super.beforeAll();
     }
 
