@@ -15,23 +15,20 @@ import org.dbunit.dataset.xml.FlatXmlDataSetBuilder;
 import org.dbunit.operation.DatabaseOperation;
 import org.h2.tools.RunScript;
 
-public class DataProviderTest  {
+public abstract class AbstractDaoTest  {
 
     private static final String JDBC_DRIVER = org.h2.Driver.class.getName();
+    
     protected ConnectionProvider connectionProvider;
     protected IDatabaseTester databaseTester;
     
-    public DataProviderTest() throws ClassNotFoundException, SQLException, IOException {
+    public AbstractDaoTest() throws Exception {
             this.connectionProvider = new ConnectionProvider("application.properties");
             this.databaseTester = new JdbcDatabaseTester(JDBC_DRIVER,
-                    connectionProvider.getConnection().getMetaData().getURL());    
+                    connectionProvider.getConnection().getMetaData().getURL());   
+            createSchema();
+            init();
         }
-
-    
-    public void beforeAll() throws Exception {
-        createSchema();
-        init();
-    }
     
     public void createSchema() throws IOException, URISyntaxException, SQLException {
         URL url = Thread.currentThread().getContextClassLoader().getResource("schema.sql");

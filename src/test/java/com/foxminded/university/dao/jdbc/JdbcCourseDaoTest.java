@@ -5,16 +5,15 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import org.dbunit.dataset.ITable;
 import org.junit.jupiter.api.Test;
 
-import com.foxminded.university.DataProviderTest;
+import com.foxminded.university.AbstractDaoTest;
 import com.foxminded.university.model.Course;
 
-public class JdbcCourseDaoTest extends DataProviderTest {
+public class JdbcCourseDaoTest extends AbstractDaoTest {
 
     private JdbcCourseDao courseDao;
 
     public JdbcCourseDaoTest() throws Exception {
-        this.courseDao = new JdbcCourseDao(connectionProvider);
-        super.beforeAll();
+        courseDao = new JdbcCourseDao(connectionProvider);
     }
 
     @Test

@@ -10,7 +10,6 @@ import com.foxminded.university.model.Group;
 import com.foxminded.university.model.Student;
 
 public class DataGeneratorTest {
-
     
     private DataGenerator dataGenerator = new DataGenerator();
     

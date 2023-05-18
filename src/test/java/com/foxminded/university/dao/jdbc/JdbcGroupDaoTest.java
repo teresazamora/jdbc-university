@@ -9,16 +9,15 @@ import java.util.List;
 import org.dbunit.dataset.DataSetException;
 import org.junit.jupiter.api.Test;
 
-import com.foxminded.university.DataProviderTest;
+import com.foxminded.university.AbstractDaoTest;
 import com.foxminded.university.model.Group;
 
-public class JdbcGroupDaoTest extends DataProviderTest {
+public class JdbcGroupDaoTest extends AbstractDaoTest {
 
     private JdbcGroupDao groupDao;
     
     public JdbcGroupDaoTest() throws Exception {
-        this.groupDao = new JdbcGroupDao(connectionProvider);
-        super.beforeAll();
+        groupDao = new JdbcGroupDao(connectionProvider);
     }
 
     @Test
